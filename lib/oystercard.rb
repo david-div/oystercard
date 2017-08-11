@@ -7,12 +7,12 @@ DEFAULT_BALANCE = 0
 # in lib/oystercard.rb
 
 class Oystercard
-  attr_reader   :balance, :trip_history
-  attr_accessor :journey
+  attr_reader   :balance, #:trip_history
+  attr_accessor :journey, :trip_history
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
-    @trip_history = []
+    # @trip_history = []
   end
 
   def top_up(amount)
@@ -27,8 +27,10 @@ class Oystercard
   def touch_in(station = nil) # set as no class is created
     raise 'Insufficient funds' if insufficient_funds?
     deduct(@journey.fare) if @journey != nil
+    @trip_history = JourneyLog.new()
     @trip_history << @journey if @journey != nil
-    @journey = Journey.new(station)
+    @trip_history.start
+    # @journey = Journey.new(station)
   end
 
   def touch_out(station = nil)
