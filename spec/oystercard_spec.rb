@@ -10,7 +10,7 @@ describe Oystercard do
 
   context '#init' do
     it 'should start with an empty hash' do
-      expect(subject.journey).to be_empty
+      expect(subject.trip_history).to be_empty
     end
   end
 
@@ -100,14 +100,7 @@ describe Oystercard do
     it 'stores station of entry to' do
       subject.top_up 10
       subject.touch_in(station)
-      expect(subject.entry_station).to eq station
-    end
-
-    it 'should add starting station to journey' do
-      # subject { Oystercard.new 30 }
-      subject.top_up 10
-      subject.touch_in('aldgate')
-      expect(subject.journey).to include('aldgate' => 'not touched out yet')
+      expect(subject.journey.station_in).to eq station
     end
 
   end
@@ -123,7 +116,11 @@ describe Oystercard do
 
     it 'forgets entry station on touch out' do
       subject.touch_out
-      expect(subject.journey).to be_empty
+      expect(subject.journey).to be_nil
+    end
+
+    it 'charge the penalty fare if there was no touch out' do
+      expect(subject.touch_in)
     end
 
   end

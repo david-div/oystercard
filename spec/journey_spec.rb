@@ -1,8 +1,8 @@
 require 'journey'
 
 describe Journey do
-  let(:journey) { Journey.new "Victoria"}
-  let(:station) {double :station }
+  let(:journey) { Journey.new "Victoria" }
+  let(:station) { double :station }
 
   context '#initialize' do
 
@@ -15,17 +15,24 @@ describe Journey do
     end
 
     it "initializes with an exit station of nil" do
-      expect(journey.station_out).to eq nil
+      expect(journey.station_out).to be_nil
     end
 
   end
 
   context '#end_journey' do
 
-    it "take an end end station" do
+    it "takes an end station" do
       expect(journey.end_journey(station)).to eq journey.station_out
     end
 
+  end
+
+  context '#fare' do
+    it "returns the minimum fare" do
+      expect(subject.fare).to eq MINIMUM_FARE
+    end
+    
   end
 
 end
