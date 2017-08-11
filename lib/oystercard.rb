@@ -26,16 +26,16 @@ class Oystercard
 
   def touch_in(station = nil) # set as no class is created
     raise 'Insufficient funds' if insufficient_funds?
-    # raise 'error, you have already tapped in' unless @journey.nil?
-    deduct(@journey.fare) if @journey.nil?
+    deduct(@journey.fare) if @journey != nil
+    @trip_history << @journey if @journey != nil
     @journey = Journey.new(station)
-
   end
 
   def touch_out(station = nil)
+    @journey = Journey.new if @journey.nil?
     @journey.end_journey(station)
-    @trip_history << @journey
     deduct(@journey.fare)
+    @trip_history << @journey
     @journey = nil
   end
 

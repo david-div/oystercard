@@ -27,6 +27,17 @@ describe Oystercard do
     it 'has a default balance of 0' do
       expect(subject.balance).to be_zero
     end
+
+    it 'reduces by the penalty fare if you forgot to touch out' do
+      subject.top_up 10
+      subject.touch_in(station)
+      expect { subject.touch_in(station) }.to change { subject.balance }.by(-PENALTY_FARE)
+    end
+
+    it 'reduces by the penalty fare if you forgot to touch in' do
+      subject.top_up 10
+      expect { subject.touch_out(station) }.to change { subject.balance }.by(-PENALTY_FARE)
+    end
   end
 
   context '#top_up' do
@@ -91,11 +102,11 @@ describe Oystercard do
     end
     # raise erros have to be in a block
 
-    it 'can store new elements as hashes in @journey_array' do
-      subject.top_up(10)
-      subject.touch_in('Victoria')
-      expect { subject.touch_in "StJamesPark" }.to raise_error 'error, you have already tapped in'
-    end
+    # it 'can store new elements as hashes in @journey_array' do
+    #   subject.top_up(10)
+    #   subject.touch_in('Victoria')
+    #   expect { subject.touch_in "StJamesPark" }.to raise_error 'error, you have already tapped in'
+    # end
 
     it 'stores station of entry to' do
       subject.top_up 10
@@ -109,8 +120,8 @@ describe Oystercard do
     before { subject.instance_variable_set(:@balance, 30) }
     before { subject.touch_in(station) }
     # setting criteria in the block for the rest of the methods
-    it 'should reduce the balance by the minimum fair' do
-      expect { subject.touch_out }.to change { subject.balance }.by(-1)
+    it 'should reduce the balance by the minimum fare' do
+      expect { subject.touch_out(station) }.to change { subject.balance }.by(-1)
     end
     #  as 1 is the minimum amount to get deducted
 

@@ -3,6 +3,7 @@ require 'journey'
 describe Journey do
   let(:journey) { Journey.new "Victoria" }
   let(:station) { double :station }
+  let(:oystercard) { double :oystercard }
 
   context '#initialize' do
 
@@ -30,9 +31,20 @@ describe Journey do
 
   context '#fare' do
     it "returns the minimum fare" do
-      expect(subject.fare).to eq MINIMUM_FARE
+      journey.end_journey("london")
+      expect(journey.fare).to eq MINIMUM_FARE
     end
-    
+
+    # it 'returns the penalty fare if you forgot to touch out' do
+    #   expect(journey.fare).to eq PENALTY_FARE
+    # end
+    #
+    # it 'returns the penalty fare if you forgot to touch in' do
+    #   journey.station_in = nil
+    #   journey.end_journey(station)
+    #   expect(journey.fare).to eq PENALTY_FARE
+    # end
+
   end
 
 end
